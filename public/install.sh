@@ -30,18 +30,15 @@ else
     exit 1
 fi
 
-# 2. Find Latest Release (from release/latest folder in repo)
+# 2. Find Latest Release from GitHub Releases
 echo "   Fetching latest release from GitHub..."
-# We find the *filename* from the API
-FILENAME=$(curl -s "https://api.github.com/repos/$REPO/releases/latest" | grep '"name":.*.tar.gz' | cut -d '"' -f 4 | head -n 1)
+LATEST_URL=$(curl -s "https://api.github.com/repos/$REPO/releases/latest" | grep "browser_download_url.*\.tar\.gz" | cut -d '"' -f 4 | head -n 1)
 
-if [ -z "$FILENAME" ]; then
-    echo "   Error: Could not find any .tar.gz file in releases/latest/"
+if [ -z "$LATEST_URL" ]; then
+    echo "   Error: Could not find .tar.gz in latest release"
+    echo "   Please create a GitHub Release and upload the tarball as an asset"
     exit 1
 fi
-
-# We construct the URL manually to ensure LFS redirection works (raw.githubusercontent sometimes serves pointers)
-LATEST_URL="https://github.com/$REPO/raw/main/release/latest/$FILENAME"
 
 echo "   Downloading from: $LATEST_URL"
 
