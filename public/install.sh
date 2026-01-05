@@ -33,10 +33,10 @@ fi
 # 2. Find Latest Release (from release/latest folder in repo)
 echo "   Fetching latest release from GitHub..."
 # We find the *filename* from the API
-FILENAME=$(curl -s "https://api.github.com/repos/$REPO/contents/release/latest" | grep '"name":.*.tar.gz' | cut -d '"' -f 4 | head -n 1)
+FILENAME=$(curl -s "https://api.github.com/repos/$REPO/releases/latest" | grep '"name":.*.tar.gz' | cut -d '"' -f 4 | head -n 1)
 
 if [ -z "$FILENAME" ]; then
-    echo "   Error: Could not find any .tar.gz file in release/latest/"
+    echo "   Error: Could not find any .tar.gz file in releases/latest/"
     exit 1
 fi
 
