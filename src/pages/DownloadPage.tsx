@@ -86,10 +86,10 @@ export function DownloadPage() {
                                 <div className="flex items-center gap-2 overflow-hidden">
                                     <span className="text-accent">$</span>
                                     <div className="flex-1 whitespace-nowrap overflow-x-auto scrollbar-hide">
-                                        <span className="text-accent">curl</span> -fsSL https://raw.githubusercontent.com/FDgajju/zync/main/website/public/install.sh | sh
+                                        <span className="text-accent">curl</span> -fsSL https://raw.githubusercontent.com/FDgajju/zync-website/main/public/install.sh | sh
                                     </div>
                                     <div className="flex-shrink-0">
-                                        <CopyButton text="curl -fsSL https://raw.githubusercontent.com/FDgajju/zync/main/website/public/install.sh | sh" />
+                                        <CopyButton text="curl -fsSL https://raw.githubusercontent.com/FDgajju/zync-website/main/public/install.sh | sh" />
                                     </div>
                                 </div>
                             </div>
