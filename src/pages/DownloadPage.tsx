@@ -1,4 +1,4 @@
-import { Apple, Monitor, Laptop, Download, Copy, Check, Terminal, Cpu, Zap, Command } from 'lucide-react';
+import { Apple, Monitor, Laptop, Download, Copy, Check, Cpu, Zap, Command } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useState } from 'react';
 
