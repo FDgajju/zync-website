@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@theme {
+  /* Standard Dark Theme (Zed-inspired) - Default */
+  --color-bg: #09090b;
+  /* Zinc-950 */
+  --color-panel: #18181b;
+  /* Zinc-900 */
+  --color-surface: #27272a;
+  /* Zinc-800 */
+  --color-border: #27272a;
+  /* Zinc-800 */
+
+  --color-text: #e4e4e7;
+  /* Zinc-200 */
+  --color-muted: #a1a1aa;
+  /* Zinc-400 */
+
+  --color-accent: #6366f1;
+  /* Indigo-500 */
+  --color-accent-glow: rgba(99, 102, 241, 0.5);
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+@layer utilities {
+  .glass {
+    @apply backdrop-blur-md bg-panel/80 border border-border/50;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px var(--color-accent-glow);
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@layer base {
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.fill-mode-backwards {
+  animation-fill-mode: backwards;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
