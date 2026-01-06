@@ -1,8 +1,38 @@
 import { Apple, Monitor, Laptop, Download, Copy, Check, Cpu, Zap, Command } from 'lucide-react';
 import { cn } from '../lib/utils';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export function DownloadPage() {
+    const [links, setLinks] = useState({
+        mac: '',
+        win: '',
+        linux: '',
+        version: 'Latest'
+    });
+
+    useEffect(() => {
+        fetch('https://api.github.com/repos/FDgajju/zync/releases/latest')
+            .then(res => res.json())
+            .then(data => {
+                const assets = data.assets || [];
+                // Windows
+                const winAsset = assets.find((a: any) => a.name.endsWith('.exe'));
+                // Mac (look for zip and 'mac' in name, or dmg)
+                const macAsset = assets.find((a: any) =>
+                    (a.name.endsWith('.zip') && a.name.toLowerCase().includes('mac')) ||
+                    a.name.endsWith('.dmg')
+                );
+
+                setLinks({
+                    mac: macAsset?.browser_download_url || '',
+                    win: winAsset?.browser_download_url || '',
+                    linux: '',
+                    version: data.tag_name || 'Latest'
+                });
+            })
+            .catch(console.error);
+    }, []);
+
     return (
         <div className="min-h-screen pt-32 pb-20 px-6 relative overflow-hidden flex flex-col items-center">
 
@@ -17,7 +47,7 @@ export function DownloadPage() {
             <div className="text-center max-w-4xl mx-auto mb-20 relative z-10">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-accent text-xs font-mono font-bold mb-6 tracking-wider uppercase animate-fade-in">
                     <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                    System Ready • v1.0.0
+                    System Ready • {links.version}
                 </div>
 
                 <h1 className="text-6xl md:text-8xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/40 animate-fade-in [animation-delay:100ms]">
@@ -43,7 +73,11 @@ export function DownloadPage() {
                     delay="300ms"
                 >
                     <div className="mt-8 space-y-3">
-                        <DownloadButton label="Download for Mac" />
+                        <DownloadButton
+                            label={links.mac ? "Download for Mac" : "Coming Soon"}
+                            href={links.mac || "#"}
+                            disabled={!links.mac}
+                        />
                         <div className="flex items-center justify-center gap-4 text-xs text-muted font-mono">
                             <span className="flex items-center gap-1"><Command size={10} /> Universal</span>
                             <span className="flex items-center gap-1"><Cpu size={10} /> Metal API</span>
@@ -61,7 +95,11 @@ export function DownloadPage() {
                     delay="400ms"
                 >
                     <div className="mt-8 space-y-3">
-                        <DownloadButton label="Download for Windows" />
+                        <DownloadButton
+                            label={links.win ? "Download for Windows" : "Coming Soon"}
+                            href={links.win || "#"}
+                            disabled={!links.win}
+                        />
                         <div className="flex items-center justify-center gap-4 text-xs text-muted font-mono">
                             <span className="flex items-center gap-1"><Zap size={10} /> GPU Accel</span>
                             <span className="flex items-center gap-1"><Monitor size={10} /> DirectX</span>
@@ -146,16 +184,34 @@ function PlatformCard({ title, icon: Icon, desc, sub, gradient, children, delay,
     )
 }
 
-function DownloadButton({ label }: { label: string }) {
+function DownloadButton({ label, href, disabled }: { label: string; href: string; disabled?: boolean }) {
+    if (disabled) {
+        return (
+            <button
+                disabled
+                className={cn(
+                    "w-full h-12 rounded-xl bg-white/50 text-black/50 font-bold cursor-not-allowed",
+                    "flex items-center justify-center gap-2"
+                )}
+            >
+                <Download size={18} />
+                {label}
+            </button>
+        )
+    }
+
     return (
-        <button className={cn(
-            "w-full h-12 rounded-xl bg-white text-black font-bold transition-all",
-            "hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]",
-            "flex items-center justify-center gap-2"
-        )}>
+        <a
+            href={href}
+            className={cn(
+                "w-full h-12 rounded-xl bg-white text-black font-bold transition-all",
+                "hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]",
+                "flex items-center justify-center gap-2"
+            )}
+        >
             <Download size={18} />
             {label}
-        </button>
+        </a>
     )
 }
 
