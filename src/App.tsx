@@ -6,9 +6,12 @@ import { ThemeShowcase } from './components/ThemeShowcase';
 import { Footer } from './components/Footer';
 import { DownloadPage } from './pages/DownloadPage';
 
+import { ScrollToAnchor } from './components/ScrollToAnchor';
+
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToAnchor />
       <div className="min-h-screen bg-bg text-text selection:bg-accent/30 selection:text-white">
         <Navbar />
         <main>
