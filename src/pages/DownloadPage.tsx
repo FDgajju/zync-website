@@ -10,7 +10,21 @@ export function DownloadPage() {
         version: 'Latest'
     });
 
+    const [currentOS, setCurrentOS] = useState<'mac' | 'win' | 'linux' | null>(null);
+
     useEffect(() => {
+        // Detect OS
+        const ua = window.navigator.userAgent;
+        const platform = window.navigator.platform;
+
+        if (ua.includes('Win') || platform.includes('Win')) {
+            setCurrentOS('win');
+        } else if (ua.includes('Mac') || platform.includes('Mac')) {
+            setCurrentOS('mac');
+        } else if (ua.includes('Linux') || platform.includes('Linux')) {
+            setCurrentOS('linux');
+        }
+
         fetch('https://api.github.com/repos/FDgajju/zync/releases/latest')
             .then(res => res.json())
             .then(data => {
@@ -71,12 +85,14 @@ export function DownloadPage() {
                     sub="Universal Binary • macOS 11+"
                     gradient="from-gray-500/20 to-gray-500/5"
                     delay="300ms"
+                    isCurrentOS={currentOS === 'mac'}
                 >
                     <div className="mt-8 space-y-3">
                         <DownloadButton
                             label={links.mac ? "Download for Mac" : "Coming Soon"}
                             href={links.mac || "#"}
                             disabled={!links.mac}
+                            highlighted={currentOS === 'mac'}
                         />
                         <div className="flex items-center justify-center gap-4 text-xs text-muted font-mono">
                             <span className="flex items-center gap-1"><Command size={10} /> Universal</span>
@@ -93,16 +109,18 @@ export function DownloadPage() {
                     sub="Windows 10/11 • x64/ARM64"
                     gradient="from-blue-500/20 to-blue-500/5"
                     delay="400ms"
+                    isCurrentOS={currentOS === 'win'}
                 >
                     <div className="mt-8 space-y-3">
                         <DownloadButton
                             label={links.win ? "Download for Windows" : "Coming Soon"}
                             href={links.win || "#"}
                             disabled={!links.win}
+                            highlighted={currentOS === 'win'}
                         />
                         <div className="flex items-center justify-center gap-4 text-xs text-muted font-mono">
-                            <span className="flex items-center gap-1"><Zap size={10} /> GPU Accel</span>
-                            <span className="flex items-center gap-1"><Monitor size={10} /> DirectX</span>
+                            <span className="flex items-center gap-1"><Zap size={10} /> Fast</span>
+                            <span className="flex items-center gap-1"><Monitor size={10} /> Native</span>
                         </div>
                     </div>
                 </PlatformCard>
@@ -115,7 +133,8 @@ export function DownloadPage() {
                     sub="Debian • Arch • Fedora"
                     gradient="from-accent/20 to-accent/5"
                     delay="500ms"
-                    featured
+                    featured={currentOS === 'linux'}
+                    isCurrentOS={currentOS === 'linux'}
                 >
                     <div className="mt-6">
                         <div className="relative group/term cursor-text">
@@ -146,13 +165,14 @@ export function DownloadPage() {
     );
 }
 
-function PlatformCard({ title, icon: Icon, desc, sub, gradient, children, delay, featured }: any) {
+function PlatformCard({ title, icon: Icon, desc, sub, gradient, children, delay, featured, isCurrentOS }: any) {
     return (
         <div className={cn(
             "relative group rounded-3xl p-1",
             "bg-gradient-to-b from-white/10 to-transparent",
             "hover:from-white/20 hover:to-white/5 transition-all duration-500",
-            "animate-fade-in fill-mode-backwards"
+            "animate-fade-in fill-mode-backwards",
+            isCurrentOS && "ring-2 ring-accent/50 shadow-[0_0_30px_-5px_rgba(99,102,241,0.5)] scale-[1.02]"
         )} style={{ animationDelay: delay }}>
 
             <div className={cn(
@@ -164,10 +184,17 @@ function PlatformCard({ title, icon: Icon, desc, sub, gradient, children, delay,
                 {/* Top Shine */}
                 <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
+                {/* Current OS Badge */}
+                {isCurrentOS && (
+                    <div className="absolute top-4 right-4 px-2 py-1 bg-accent/20 border border-accent/30 rounded-full text-[10px] font-bold text-accent uppercase tracking-wider">
+                        Your OS
+                    </div>
+                )}
+
                 {/* Icon Container */}
                 <div className={cn(
                     "w-20 h-20 rounded-2xl flex items-center justify-center mb-6 transition-transform duration-500 group-hover:scale-110",
-                    featured ? "bg-accent/10 text-accent shadow-[0_0_30px_-5px_var(--color-accent)]" : "bg-white/5 text-white/70"
+                    (featured || isCurrentOS) ? "bg-accent/10 text-accent shadow-[0_0_30px_-5px_var(--color-accent)]" : "bg-white/5 text-white/70"
                 )}>
                     <Icon size={40} strokeWidth={1.5} />
                 </div>
@@ -184,7 +211,7 @@ function PlatformCard({ title, icon: Icon, desc, sub, gradient, children, delay,
     )
 }
 
-function DownloadButton({ label, href, disabled }: { label: string; href: string; disabled?: boolean }) {
+function DownloadButton({ label, href, disabled, highlighted }: { label: string; href: string; disabled?: boolean; highlighted?: boolean }) {
     if (disabled) {
         return (
             <button
@@ -204,9 +231,11 @@ function DownloadButton({ label, href, disabled }: { label: string; href: string
         <a
             href={href}
             className={cn(
-                "w-full h-12 rounded-xl bg-white text-black font-bold transition-all",
-                "hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]",
-                "flex items-center justify-center gap-2"
+                "w-full h-12 rounded-xl font-bold transition-all",
+                "flex items-center justify-center gap-2",
+                highlighted
+                    ? "bg-accent text-white hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] animate-pulse"
+                    : "bg-white text-black hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]"
             )}
         >
             <Download size={18} />

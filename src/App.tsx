@@ -3,6 +3,7 @@ import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { FeatureGrid } from './components/FeatureGrid';
 import { ThemeShowcase } from './components/ThemeShowcase';
+import { FAQ } from './components/FAQ';
 import { Footer } from './components/Footer';
 import { DownloadPage } from './pages/DownloadPage';
 
@@ -12,7 +13,7 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToAnchor />
-      <div className="min-h-screen bg-bg text-text selection:bg-accent/30 selection:text-white">
+      <div className="min-h-screen bg-bg text-text selection:bg-white/20 selection:text-white">
         <Navbar />
         <main>
           <Routes>
@@ -21,6 +22,7 @@ function App() {
                 <Hero />
                 <FeatureGrid />
                 <ThemeShowcase />
+                <FAQ />
               </>
             } />
             <Route path="/download" element={<DownloadPage />} />

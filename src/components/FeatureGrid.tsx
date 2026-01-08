@@ -1,86 +1,148 @@
-import { Terminal, Network, FileText, Zap, Shield, Sparkles } from 'lucide-react';
+import { Zap, Shield, HardDrive, Network, Cpu } from 'lucide-react';
+import { useState, useEffect } from 'react';
+
+// Typing effect component
+function Typewriter() {
+    const [text, setText] = useState('');
+    const fullText = "ssh root@production --turbo";
+
+    useEffect(() => {
+        let i = 0;
+        const interval = setInterval(() => {
+            setText(fullText.slice(0, i));
+            i++;
+            if (i > fullText.length) {
+                setTimeout(() => { i = 0; setText(''); }, 2000);
+            }
+        }, 100);
+        return () => clearInterval(interval);
+    }, []);
+
+    return <span className="font-mono text-white">{text}<span className="animate-pulse">_</span></span>;
+}
 
 export function FeatureGrid() {
     return (
-        <section id="features" className="py-32 px-6 max-w-7xl mx-auto">
-            <div className="mb-16">
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">
-                    Everything you need,<br />
-                    <span className="text-muted">nothing you don't.</span>
-                </h2>
-                <p className="text-xl text-muted max-w-2xl">
-                    We stripped away the bloat and focused on what matters: raw performance, reliability, and a developer experience that gets out of your way.
-                </p>
-            </div>
+        <section id="features" className="py-32 px-6 max-w-7xl mx-auto space-y-40">
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                {/* Card 1: Smart Terminal (Large) */}
-                <div className="md:col-span-2 rounded-3xl border border-white/5 bg-panel/50 p-8 hover:border-white/10 transition-colors group">
-                    <div className="mb-6 w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent">
-                        <Terminal size={24} />
+            {/* Feature 1: Performance */}
+            <div className="grid md:grid-cols-2 gap-20 items-center group">
+                <div>
+                    <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-white mb-8 group-hover:bg-white/10 transition-colors">
+                        <Cpu size={24} />
                     </div>
-                    <h3 className="text-2xl font-bold mb-3">Smart Terminal</h3>
-                    <p className="text-muted text-lg mb-8">
-                        Powered by xterm.js with GPU acceleration. Tabs, split panes, and instant search (Ctrl+F) built right in.
+                    <h3 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+                        Built for speed.<br />
+                        <span className="text-muted/60">Every frame matters.</span>
+                    </h3>
+                    <p className="text-lg text-muted/60 leading-relaxed max-w-md">
+                        Built with xterm.js for smooth, responsive terminal rendering. Instant startup, seamless scrolling, and zero lag. Optimized for modern workflows.
                     </p>
-                    <div className="h-48 rounded-xl bg-bg border border-white/5 overflow-hidden relative">
-                         <div className="absolute inset-0 flex items-center justify-center font-mono text-sm text-muted/50 select-none">
-                            [Interactive Terminal Preview]
-                         </div>
+                </div>
+                <div className="relative h-[400px] flex items-center justify-center">
+                    {/* Abstract Performance Viz */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent blur-3xl opacity-20" />
+                    <div className="relative w-full max-w-sm aspect-square border border-white/10 rounded-full flex items-center justify-center ring-1 ring-white/5">
+                        <div className="w-2/3 h-2/3 border border-dashed border-white/20 rounded-full animate-[spin_10s_linear_infinite]" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="text-5xl font-bold font-mono text-white">⚡</div>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                {/* Card 2: Visual Tunnels */}
-                <div className="rounded-3xl border border-white/5 bg-panel/50 p-8 hover:border-white/10 transition-colors">
-                    <div className="mb-6 w-12 h-12 rounded-2xl bg-green-500/10 flex items-center justify-center text-green-500">
+            {/* Feature 2: Visual Tunnels */}
+            <div className="grid md:grid-cols-2 gap-20 items-center md:flex-row-reverse group">
+                <div className="order-2 md:order-1 relative h-[400px] flex items-center justify-center">
+                    {/* Abstract Network Viz */}
+                    <svg className="w-full h-full max-w-md" viewBox="0 0 400 400">
+                        <circle cx="50" cy="200" r="4" fill="#fff" className="animate-pulse" />
+                        <circle cx="350" cy="200" r="4" fill="#fff" className="animate-pulse" />
+                        <path d="M 50 200 Q 200 100 350 200" fill="none" stroke="currentColor" className="text-white/20" strokeWidth="2" strokeDasharray="4 4" />
+                        <path d="M 50 200 Q 200 300 350 200" fill="none" stroke="currentColor" className="text-white/20" strokeWidth="2" strokeDasharray="4 4" />
+
+                        {/* Moving dots */}
+                        <circle r="3" fill="#fff">
+                            <animateMotion dur="2s" repeatCount="indefinite" path="M 50 200 Q 200 100 350 200" />
+                        </circle>
+                        <circle r="3" fill="#fff">
+                            <animateMotion dur="2.5s" repeatCount="indefinite" path="M 50 200 Q 200 300 350 200" />
+                        </circle>
+                    </svg>
+                </div>
+                <div className="order-1 md:order-2">
+                    <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-white mb-8 group-hover:bg-white/10 transition-colors">
                         <Network size={24} />
                     </div>
-                    <h3 className="text-2xl font-bold mb-3">Visual Tunnels</h3>
-                    <p className="text-muted">
-                        Forget `ssh -L`. Manage local and remote port forwarding with a simple, visual interface.
+                    <h3 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+                        Visual Tunnels.<br />
+                        <span className="text-muted/60">No more -L 8080.</span>
+                    </h3>
+                    <p className="text-lg text-muted/60 leading-relaxed max-w-md">
+                        Drag, drop, connected. Visualize your port forwards and tunnels in a beautiful interface that makes complex networking feel tangible.
                     </p>
                 </div>
+            </div>
 
-                {/* Card 3: Snippets */}
-                <div className="rounded-3xl border border-white/5 bg-panel/50 p-8 hover:border-white/10 transition-colors">
-                    <div className="mb-6 w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500">
+            {/* Feature 3: Smart Snippets */}
+            <div className="grid md:grid-cols-2 gap-20 items-center group">
+                <div>
+                    <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-white mb-8 group-hover:bg-white/10 transition-colors">
                         <Zap size={24} />
                     </div>
-                    <h3 className="text-2xl font-bold mb-3">Smart Snippets</h3>
-                    <p className="text-muted">
-                        Save your most used commands. Run them on any server with a single click. Variable support coming soon.
+                    <h3 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+                        Type less.<br />
+                        <span className="text-muted/60">Deploy more.</span>
+                    </h3>
+                    <p className="text-lg text-muted/60 leading-relaxed max-w-md">
+                        Smart snippets let you save complex commands and run them across multiple servers instantly. It's like having a cheat sheet that actually works.
                     </p>
                 </div>
-
-                {/* Card 4: SFTP (Large) */}
-                <div className="md:col-span-2 rounded-3xl border border-white/5 bg-panel/50 p-8 hover:border-white/10 transition-colors">
-                    <div className="flex flex-col md:flex-row gap-8">
-                        <div className="flex-1">
-                            <div className="mb-6 w-12 h-12 rounded-2xl bg-blue-500/10 flex items-center justify-center text-blue-500">
-                                <FileText size={24} />
-                            </div>
-                            <h3 className="text-2xl font-bold mb-3">Drag & Drop SFTP</h3>
-                            <p className="text-muted text-lg mb-6">
-                                Upload files to your server just by dragging them into the window. Built-in file manager for quick edits.
-                            </p>
-                             <ul className="space-y-2 text-muted">
-                                <li className="flex items-center gap-2"><Shield size={16} /> Secure by default</li>
-                                <li className="flex items-center gap-2"><Sparkles size={16} /> Resume capability</li>
-                            </ul>
-                        </div>
-                        <div className="flex-1 h-48 rounded-xl bg-bg border border-white/5 relative overflow-hidden">
-                            {/* Abstract File List */}
-                            <div className="p-4 space-y-2 opacity-50">
-                                <div className="h-4 w-3/4 bg-white/10 rounded" />
-                                <div className="h-4 w-1/2 bg-white/10 rounded" />
-                                <div className="h-4 w-5/6 bg-white/10 rounded" />
-                            </div>
-                        </div>
+                <div className="relative h-[300px] w-full max-w-lg mx-auto bg-[#09090b] border border-white/10 rounded-xl p-6 font-mono text-sm leading-relaxed overflow-hidden">
+                    <div className="flex gap-2 mb-4 opacity-50">
+                        <div className="w-3 h-3 rounded-full bg-white/20" />
+                        <div className="w-3 h-3 rounded-full bg-white/20" />
+                    </div>
+                    <div className="text-muted">
+                        <span className="text-green-500">➜</span> <Typewriter />
+                    </div>
+                    <div className="mt-4 text-white/50">
+                        Deployment started...<br />
+                        Building containers...<br />
+                        <span className="text-white">✓ App running on port 3000</span>
                     </div>
                 </div>
-
             </div>
+
+            {/* Feature 4: Portable */}
+            <div className="grid md:grid-cols-2 gap-20 items-center md:flex-row-reverse group">
+                <div className="order-2 md:order-1 flex justify-center">
+                    <div className="relative w-64 h-40 border border-white/10 bg-[#09090b] rounded-lg transform -rotate-6 flex items-center justify-center group-hover:rotate-0 transition-transform duration-500 shadow-2xl">
+                        <div className="absolute top-0 right-0 p-4 opacity-20">
+                            <Shield size={24} />
+                        </div>
+                        <div className="flex flex-col items-center gap-3">
+                            <HardDrive size={32} className="text-white" />
+                            <span className="font-mono text-xs text-muted">E:\Zync-Portable</span>
+                        </div>
+                        {/* Glow */}
+                        <div className="absolute -inset-1 bg-white/20 blur-xl -z-10 opacity-0 group-hover:opacity-30 transition-opacity" />
+                    </div>
+                </div>
+                <div className="order-1 md:order-2">
+                    <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-white mb-8 group-hover:bg-white/10 transition-colors">
+                        <HardDrive size={24} />
+                    </div>
+                    <h3 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+                        Simply Portable.<br />
+                        <span className="text-muted/60">Zero footprint.</span>
+                    </h3>
+                    <p className="text-lg text-muted/60 leading-relaxed max-w-md">
+                        Put Zync on a USB stick or a cloud folder. It runs entirely self-contained. No registry keys, no hidden files. Your environment, everywhere.
+                    </p>
+                </div>
+            </div>
+
         </section>
     );
 }

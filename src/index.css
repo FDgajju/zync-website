@@ -2,7 +2,7 @@
 
 @theme {
   /* Standard Dark Theme (Zed-inspired) - Default */
-  --color-bg: #09090b;
+  --color-bg: #050505;
   /* Zinc-950 */
   --color-panel: #18181b;
   /* Zinc-900 */
@@ -40,6 +40,24 @@
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
   }
 }
 
