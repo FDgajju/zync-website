@@ -62,8 +62,8 @@ echo "   Made executable: $APPIMAGE_PATH"
 ln -sf "$APPIMAGE_PATH" "$BIN_DIR/zync"
 
 # 7. Download Icon to System Theme
-# Using main/public/icon.png to be safe (assumes zync repo structure)
-ICON_URL="https://raw.githubusercontent.com/FDgajju/zync/main/public/icon.png"
+# Using src-tauri/icons/icon.png from main branch (High-Res 512x512)
+ICON_URL="https://raw.githubusercontent.com/FDgajju/zync/main/src-tauri/icons/icon.png"
 curl -s -L "$ICON_URL" -o "$ICON_DIR/zync.png" || echo "   Warning: Could not fetch icon."
 
 # 8. Create Desktop Entry
@@ -73,7 +73,7 @@ rm -f "$DESKTOP_DIR/Zync.desktop"
 cat > "$DESKTOP_DIR/zync.desktop" <<EOF
 [Desktop Entry]
 Name=$APP_NAME
-Exec=$APPIMAGE_PATH --no-sandbox %U
+Exec=$APPIMAGE_PATH %U
 Icon=zync
 Type=Application
 Categories=Development;Utility;
