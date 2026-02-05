@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { cn } from '../lib/utils';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const themes = [
     {
@@ -50,7 +51,7 @@ export function ThemeShowcase() {
     return (
         <section id="themes" className="py-32 px-6">
             <div className="max-w-4xl mx-auto text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+                <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 text-white">
                     Yours, truly.
                 </h2>
                 <p className="text-lg text-muted/60">
@@ -64,13 +65,20 @@ export function ThemeShowcase() {
                             key={theme.id}
                             onClick={() => setActiveTheme(theme)}
                             className={cn(
-                                "px-4 py-2 rounded-full text-sm font-medium transition-all",
+                                "px-4 py-2 rounded-full text-sm font-medium transition-all relative",
                                 activeTheme.id === theme.id
-                                    ? "bg-white text-black"
-                                    : "bg-white/5 text-muted hover:bg-white/10 hover:text-white"
+                                    ? "text-white"
+                                    : "text-muted hover:text-white"
                             )}
                         >
-                            {theme.name}
+                            {activeTheme.id === theme.id && (
+                                <motion.div
+                                    layoutId="activeTheme"
+                                    className="absolute inset-0 bg-white/10 rounded-full"
+                                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                />
+                            )}
+                            <span className="relative z-10">{theme.name}</span>
                         </button>
                     ))}
                 </div>
@@ -78,9 +86,11 @@ export function ThemeShowcase() {
 
             {/* Preview Window */}
             <div className="max-w-3xl mx-auto relative">
-                <div
-                    className="relative rounded-xl shadow-2xl overflow-hidden border transition-all duration-500"
-                    style={{
+                <div className="absolute -inset-1 bg-gradient-to-b from-white/5 to-transparent blur-2xl opacity-50 -z-10 rounded-xl" />
+
+                <motion.div
+                    className="relative rounded-xl shadow-2xl overflow-hidden border transition-colors duration-500"
+                    animate={{
                         backgroundColor: activeTheme.bg,
                         borderColor: 'rgba(255,255,255,0.1)'
                     }}
@@ -95,22 +105,32 @@ export function ThemeShowcase() {
                     </div>
 
                     {/* Mock Terminal Content */}
-                    <div className="p-8 font-mono text-sm leading-relaxed"
+                    <div className="p-8 font-mono text-sm leading-relaxed min-h-[200px]"
                         style={{ color: activeTheme.fg }}
                     >
-                        <div className="mb-4">
-                            <span style={{ color: activeTheme.accent }}>➜</span> <span>~</span> <span style={{ color: activeTheme.func }}>nvim</span> config.json
-                        </div>
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={activeTheme.id}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                <div className="mb-4">
+                                    <span style={{ color: activeTheme.accent }}>➜</span> <span>~</span> <span style={{ color: activeTheme.func }}>nvim</span> config.json
+                                </div>
 
-                        <div className="pl-0">
-                            <span style={{ opacity: 0.5 }}>1</span> <span style={{ color: activeTheme.keyword }}>{"{"}</span><br />
-                            <span style={{ opacity: 0.5 }}>2</span> &nbsp;&nbsp;<span style={{ color: activeTheme.keyword }}>"app_name"</span>: <span style={{ color: activeTheme.string }}>"Zync"</span>,<br />
-                            <span style={{ opacity: 0.5 }}>3</span> &nbsp;&nbsp;<span style={{ color: activeTheme.keyword }}>"version"</span>: <span style={{ color: activeTheme.accent }}>1.3.0</span>,<br />
-                            <span style={{ opacity: 0.5 }}>4</span> &nbsp;&nbsp;<span style={{ color: activeTheme.keyword }}>"theme"</span>: <span style={{ color: activeTheme.string }}>"{activeTheme.name}"</span><span className="animate-pulse">_</span><br />
-                            <span style={{ opacity: 0.5 }}>5</span> <span style={{ color: activeTheme.keyword }}>{"}"}</span>
-                        </div>
+                                <div className="pl-0">
+                                    <span style={{ opacity: 0.5 }}>1</span> <span style={{ color: activeTheme.keyword }}>{"{"}</span><br />
+                                    <span style={{ opacity: 0.5 }}>2</span> &nbsp;&nbsp;<span style={{ color: activeTheme.keyword }}>"app_name"</span>: <span style={{ color: activeTheme.string }}>"Zync"</span>,<br />
+                                    <span style={{ opacity: 0.5 }}>3</span> &nbsp;&nbsp;<span style={{ color: activeTheme.keyword }}>"version"</span>: <span style={{ color: activeTheme.accent }}>1.3.0</span>,<br />
+                                    <span style={{ opacity: 0.5 }}>4</span> &nbsp;&nbsp;<span style={{ color: activeTheme.keyword }}>"theme"</span>: <span style={{ color: activeTheme.string }}>"{activeTheme.name}"</span><span className="animate-pulse">_</span><br />
+                                    <span style={{ opacity: 0.5 }}>5</span> <span style={{ color: activeTheme.keyword }}>{"}"}</span>
+                                </div>
+                            </motion.div>
+                        </AnimatePresence>
                     </div>
-                </div>
+                </motion.div>
             </div>
         </section>
     );

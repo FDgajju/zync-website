@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Plus, Minus, HelpCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
 
 const faqs = [
@@ -59,18 +60,21 @@ export function FAQ() {
                             {openIndex === i ? <Minus size={20} className="text-accent" /> : <Plus size={20} className="text-muted" />}
                         </button>
 
-                        <div
-                            className={cn(
-                                "grid transition-[grid-template-rows] duration-200 ease-out",
-                                openIndex === i ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                        <AnimatePresence>
+                            {openIndex === i && (
+                                <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: "auto", opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.2, ease: "easeOut" }}
+                                    className="overflow-hidden"
+                                >
+                                    <div className="p-6 pt-0 text-muted leading-relaxed">
+                                        {faq.a}
+                                    </div>
+                                </motion.div>
                             )}
-                        >
-                            <div className="overflow-hidden">
-                                <div className="p-6 pt-0 text-muted leading-relaxed">
-                                    {faq.a}
-                                </div>
-                            </div>
-                        </div>
+                        </AnimatePresence>
                     </div>
                 ))}
             </div>
