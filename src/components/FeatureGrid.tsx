@@ -1,26 +1,26 @@
 import { Zap, HardDrive, Network, Cpu, FileText } from 'lucide-react';
-import { useState, useEffect, type MouseEvent } from 'react';
+import { type MouseEvent } from 'react';
 import { motion, useMotionTemplate, useMotionValue, useTransform } from 'framer-motion';
 
 // Typing effect component
-function Typewriter() {
-    const [text, setText] = useState('');
-    const fullText = "ssh root@production --turbo";
+// function Typewriter() {
+//     const [text, setText] = useState('');
+//     const fullText = "ssh root@production --turbo";
 
-    useEffect(() => {
-        let i = 0;
-        const interval = setInterval(() => {
-            setText(fullText.slice(0, i));
-            i++;
-            if (i > fullText.length) {
-                setTimeout(() => { i = 0; setText(''); }, 2000);
-            }
-        }, 100);
-        return () => clearInterval(interval);
-    }, []);
+//     useEffect(() => {
+//         let i = 0;
+//         const interval = setInterval(() => {
+//             setText(fullText.slice(0, i));
+//             i++;
+//             if (i > fullText.length) {
+//                 setTimeout(() => { i = 0; setText(''); }, 2000);
+//             }
+//         }, 100);
+//         return () => clearInterval(interval);
+//     }, []);
 
-    return <span className="font-mono text-white">{text}<span className="animate-pulse">_</span></span>;
-}
+//     return <span className="font-mono text-white">{text}<span className="animate-pulse">_</span></span>;
+// }
 
 // 3D Tilt Card Wrapper
 function TiltCard({ children, className = "" }: { children: React.ReactNode, className?: string }) {

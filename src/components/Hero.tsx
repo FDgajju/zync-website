@@ -2,7 +2,7 @@ import { ArrowRight, Search, Terminal as TerminalIcon, Settings, Plus, PanelLeft
 import { cn } from '../lib/utils';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { motion, useMotionValue, useTransform, useSpring, useMotionTemplate } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 
 export function Hero() {
     const [os, setOs] = useState('Linux');
